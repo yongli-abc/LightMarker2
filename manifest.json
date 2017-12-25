@@ -3,39 +3,15 @@
 
   "name": "LightMarker2",
   "version": "2.0",
-  "description": "An intellgent bookmark extension which can save your scrollbar position, in order to save and restore your reading location. It aims to improve your reading experience a bit.",
-
-  "icons": { "16": "assets/icons/icon16.png",
-             "48": "assets/icons/icon48.png",
-            "128": "assets/icons/icon128.png" },
+  "description": "An intellgent bookmark extension.",
 
   "browser_action": {
-    "default_icon": "assets/icons/icon48.png" ,
-    "default_title": "LightMarker",
-    "default_popup": "popup.html"
+    "default_title": "LightMarker2",
+    "default_popup": "src/html/popup.html"
   },
 
   "background": {
-    "scripts": ["js/jquery.min.js", "js/model.js", "js/background.js"],
-    "persistent": false
-  },
-
-  "commands": {
-    "save-page": {
-      "suggested_key": {
-        "default": "Ctrl+B",
-        "mac": "Command+B"
-      },
-      "description": "保存页面"
-    },
-    "_execute_browser_action": {
-      "suggested_key": {
-        "windows": "Ctrl+Shift+B",
-        "mac": "Command+Shift+B",
-        "chromeos": "Ctrl+Shift+U",
-        "linux": "Ctrl+Shift+J"
-      }
-    }
+    "scripts": ["src/js/background.js"]
   },
 
   "permissions": [
