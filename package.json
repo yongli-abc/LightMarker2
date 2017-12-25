@@ -1,0 +1,11 @@
+{
+  "name": "lightmarker2",
+  "version": "1.0.0",
+  "description": "A bookmark Chrome extension that can save and restore scrollbar location.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yong Li",
+  "license": "ISC"
+}
