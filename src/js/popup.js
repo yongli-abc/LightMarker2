@@ -137,6 +137,12 @@ Promise.all([docReadyP, tabP, folderP])
     $("#done-btn").click(function() {
         window.close();
     });
+
+    $("#remove-btn").click(function() {
+        g_popupState.node = undefined;
+        chrome.bookmarks.remove(savedNode.id);
+        window.close();
+    });
 })
 .catch(function(err) {
     console.log("uncaught error:");

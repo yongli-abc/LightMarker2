@@ -101,17 +101,17 @@ chrome.runtime.onConnect.addListener(function(port) {
         let title = g_popupState.title;
         let parentId = g_popupState.parentId;
 
-        // node must exists
-        console.assert(node);
+        // If node is undefined, the popup is closed by remove button, no action here.
+        if (node) {
+            // update title if changed
+            if (title !== node.title) {
+                chrome.bookmarks.update(node.id, { title: title });
+            }
 
-        // update title if changed
-        if (title !== node.title) {
-            chrome.bookmarks.update(node.id, { title: title });
-        }
-
-        // update parentId if changed
-        if (parentId !== node.parentId) {
-            chrome.bookmarks.move(node.id, { parentId: parentId });
+            // update parentId if changed
+            if (parentId !== node.parentId) {
+                chrome.bookmarks.move(node.id, { parentId: parentId });
+            }
         }
     });
 });

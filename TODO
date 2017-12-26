@@ -3,4 +3,7 @@ Todo:
   ✔ handle popup close moment @done(17-12-26 22:19)
     ✔ change the title if modified, move folder if modified @done(17-12-26 22:11)
     ✔ done button for closing the window @done(17-12-26 22:18)
-  
+  [ ] button actions
+    ✔ remove button @done(17-12-26 22:26)
+    [ ] edit button
+    [ ] change save scrollbar to a button
