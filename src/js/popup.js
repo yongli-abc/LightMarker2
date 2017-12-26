@@ -2,69 +2,11 @@
  * Handling popup.html events
  */
 
- /*
-  * A utility function to clean page nodes inside the bookmarkTree.
-  *
-  * @param {Object[]} An array of bookmarkTree nodes, that may contain page node.
-  *
-  * @return {Object[]} BookmarkTree nodes only containing folder nodes.
-  */
-function prunePageNodes(bookmarkTree) {
-    function isFolderNode(node) {
-        return node.hasOwnProperty("children");
-    }
-
-    let toSplice = [];
-
-    for (let i = 0; i < bookmarkTree.length; ++i) {
-        if (isFolderNode(bookmarkTree[i])) {
-            bookmarkTree[i].children = prunePageNodes(bookmarkTree[i].children);
-        } else {
-            toSplice.push(i);
-        }
-    }
-
-    for (let i = toSplice.length - 1; i >= 0; i--) {
-        bookmarkTree.splice(toSplice[i], 1);
-    }
-
-    return bookmarkTree;
-}
+const Util = chrome.extension.getBackgroundPage().LightMarker.Util;
 
 /*
- * A utility function to generate the selection options in DOM.
- *
- * @param {Object[]} folderTree An array of folder nodes. An option will be generated for each one.
- * NOTE: if the array only contains the root virtual node, we skip it and don't generate.
- *
- * @param {Object} selectDomNode The DOM node for the select tag. We require it to be passed as a parameter,
- * so we can avoid querying the DOM in every nested call.
- *
- * @param {Number} [level=0] The level of nested call, will decide how many spaces to be prefixed.
+ * Resolved when the document is ready.
  */
-function generateFolderSelectOption(folderTree, selectDomNode, level=0) {
-    console.log("level=" + level);
-    if (folderTree.length === 1 && folderTree[0].id === "0") {
-        // skip the virtual root folder
-        generateFolderSelectOption(folderTree[0].children, selectDomNode);
-        return;
-    }
-
-    for (let i = 0; i < folderTree.length; ++i) {
-        let optionDom = $("<option></option>");
-        optionDom.attr("id", "folder-option-" + folderTree[i].id);
-        optionDom.attr("value", folderTree[i].id);
-        optionDom.css("white-space", "pre-line");
-        
-        // optionDom.html(Array(level+1).join("&nbsp &nbsp") + folderTree[i].title);
-        optionDom.html(Array(level+1).join("× ") + folderTree[i].title);
-
-        console.log(optionDom);
-        selectDomNode.append(optionDom);
-        generateFolderSelectOption(folderTree[i].children, selectDomNode, level+1);
-    }
-}
-
 const docReadyP = Promise.resolve()
 .then(function() {
     return new Promise(function(res, rej) {
@@ -105,20 +47,68 @@ const folderP = Promise.resolve()
     });
 })
 .then(function(bookmarkTree) {
-    console.log("bookmarkTree:");
-    console.log(bookmarkTree);
-    return prunePageNodes(bookmarkTree);
+    return Util.prunePageNodes(bookmarkTree);
 });
 
+const checkSavedP = Promise.resolve()
+.then(function() {
+
+});
+
+let state = {}; // preserve states across promises
 Promise.all([docReadyP, tabP, folderP])
 .then(function(results) {
     const currentTab = results[1];
     const folderTree = results[2];
+
+    state.currentTab = currentTab;
 
     // fill name input
     $("#name-input").val(currentTab.title);
 
     // generate select options
     let selectDomNode = $("#folder-select");
-    generateFolderSelectOption(folderTree, selectDomNode);
+    Util.generateFolderSelectOption(folderTree, selectDomNode);
+
+    // register event handlers
+    // TODO
+
+    // check if this page has been bookmarked
+    return new Promise(function(res, rej) {
+        chrome.bookmarks.search({
+            url: currentTab.url
+        }, res);
+    });
+})
+.then(function(matchedResults) {
+    if (matchedResults.length === 0) {
+        // save it immediately
+        let bookmark = {
+            parentId: Util.defaultSelectedFolderId,
+            title: state.currentTab.title,
+            url: state.currentTab.url
+        };
+
+        // if this page hasn't been saved, save it to the default selected folder with the title.
+        return new Promise(function(res, rej) {
+            chrome.bookmarks.create(bookmark, res);
+        });
+    } else {
+        // if this page has been saved before, do nothing at this stage
+        return Promise.resolve(matchedResults[0]);
+    }
+})
+.then(function(currentNode) {
+    // when promise reaches here, the current page has either been saved before and retrieved,
+    // or it has been created as a new node.
+    console.assert(currentNode);
+})
+.catch(function(err) {
+    console.log("uncaught error:");
+    console.log(err);
 });
+
+    // adjust title & folder
+
+    // when the popup dismisses, change title if modified, move folder if modified.
+    // The only use for the done button is to dismiss the popup
