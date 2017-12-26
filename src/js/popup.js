@@ -143,6 +143,27 @@ Promise.all([docReadyP, tabP, folderP])
         chrome.bookmarks.remove(savedNode.id);
         window.close();
     });
+
+    // // Defer implementing edit feature, the collapsible list is much more complex
+    // // than I thought.
+    // $("#edit-btn").click(function() {
+    //     chrome.windows.getCurrent(function(curWindow) {
+    //         console.log(curWindow);
+    //         let width = 200;
+    //         let height = 300;
+    //         let left = Math.round((curWindow.width - width) / 2) + curWindow.left;
+    //         let top = 100 + curWindow.top;
+    //         chrome.windows.create({
+    //             url: "/src/html/edit.html",
+    //             type: "popup",
+    //             width: width,
+    //             height: height,
+    //             left: left,
+    //             top: top
+    //         });
+    //     });
+
+    // });
 })
 .catch(function(err) {
     console.log("uncaught error:");
