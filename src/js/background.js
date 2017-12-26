@@ -6,11 +6,15 @@
 const g_bookmarksBarId = "1"; // id for the bookmarks bar folder.
 
 // Provide scoped namespaces.
- window.LightMarker = {};
- window.LightMarker.Util = {};
+window.LightMarker = {};
+window.LightMarker.Util = {};
 
-// Shortcuts for namespaces to be used within this file.
+window.LightMarker.Shared = {};
+window.LightMarker.Shared.g_popupState = {}; // shared across popup & background.js
+
+// Shortcuts for names to be used within this file.
 const Util = window.LightMarker.Util;
+let g_popupState = window.LightMarker.Shared.g_popupState;
 
 /*
  * A utility function to clean page nodes inside the bookmarkTree.
@@ -83,9 +87,16 @@ window.LightMarker.Util.generateFolderSelectOption = function(folderTree, select
 window.LightMarker.Util.defaultSelectedFolderId = g_bookmarksBarId;
 
 /*
- * Main entry point
+ * Listen to "onConnect" event.
+ * Currently only the popup page could connect.
  */
-function main() {
-    console.log("background.js#main");
-}
-main();
+chrome.runtime.onConnect.addListener(function(port) {
+    console.log("port connected");
+    console.assert(port.name === "popup");
+
+    port.onDisconnect.addListener(function(port) {
+        console.log("port disconnected");
+        console.log("g_popupState");
+        console.log(g_popupState);
+    });
+});

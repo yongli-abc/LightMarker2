@@ -3,6 +3,8 @@
  */
 
 const Util = chrome.extension.getBackgroundPage().LightMarker.Util;
+let g_popupState = chrome.extension.getBackgroundPage().LightMarker.Shared.g_popupState;
+    // shared across popup & background.js
 
 /*
  * Resolved when the document is ready.
@@ -64,14 +66,27 @@ Promise.all([docReadyP, tabP, folderP])
     state.currentTab = currentTab;
 
     // fill name input
-    $("#name-input").val(currentTab.title);
+    let nameInputDomNode = $("#name-input");
+    nameInputDomNode.val(currentTab.title);
+    g_popupState.title = nameInputDomNode.val();
 
     // generate select options
     let selectDomNode = $("#folder-select");
     Util.generateFolderSelectOption(folderTree, selectDomNode);
+    g_popupState.parentId = selectDomNode.val();
 
     // register event handlers
-    // TODO
+    nameInputDomNode.change(function() {
+        console.log("new bookmark name:");
+        console.log(nameInputDomNode.val());
+        g_popupState.title = nameInputDomNode.val();
+    });
+
+    selectDomNode.change(function() {
+        console.log("new selected optoin:");
+        console.log(selectDomNode.val());
+        g_popupState.parentId = selectDomNode.val();
+    });
 
     // check if this page has been bookmarked
     return new Promise(function(res, rej) {
@@ -98,10 +113,19 @@ Promise.all([docReadyP, tabP, folderP])
         return Promise.resolve(matchedResults[0]);
     }
 })
-.then(function(currentNode) {
+.then(function(savedNode) {
     // when promise reaches here, the current page has either been saved before and retrieved,
     // or it has been created as a new node.
-    console.assert(currentNode);
+    console.assert(savedNode);
+    g_popupState.id = savedNode.id;
+
+    // Start a runtime connection to background.js
+    // This is a workaround as the 'unload' event on `window` is buggy in Chrome extension,
+    // and it's never emitted.
+    // So the background.js has to listen to "onDisconnect" in order to handle popup close.
+    chrome.runtime.connect({
+        name: "popup"
+    });
 })
 .catch(function(err) {
     console.log("uncaught error:");
