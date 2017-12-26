@@ -55,7 +55,9 @@ function generateFolderSelectOption(folderTree, selectDomNode, level=0) {
         optionDom.attr("id", "folder-option-" + folderTree[i].id);
         optionDom.attr("value", folderTree[i].id);
         optionDom.css("white-space", "pre-line");
-        optionDom.html(Array(level+1).join("&nbsp &nbsp") + folderTree[i].title);
+        
+        // optionDom.html(Array(level+1).join("&nbsp &nbsp") + folderTree[i].title);
+        optionDom.html(Array(level+1).join("× ") + folderTree[i].title);
 
         console.log(optionDom);
         selectDomNode.append(optionDom);
