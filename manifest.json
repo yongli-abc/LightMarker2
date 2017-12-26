@@ -18,6 +18,7 @@
     "http://*/",
     "activeTab",
     "tabs",
-    "storage"
+    "storage",
+    "bookmarks"
   ]
 }
