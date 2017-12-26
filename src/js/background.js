@@ -96,7 +96,22 @@ chrome.runtime.onConnect.addListener(function(port) {
 
     port.onDisconnect.addListener(function(port) {
         console.log("port disconnected");
-        console.log("g_popupState");
-        console.log(g_popupState);
+
+        let node = g_popupState.node;
+        let title = g_popupState.title;
+        let parentId = g_popupState.parentId;
+
+        // node must exists
+        console.assert(node);
+
+        // update title if changed
+        if (title !== node.title) {
+            chrome.bookmarks.update(node.id, { title: title });
+        }
+
+        // update parentId if changed
+        if (parentId !== node.parentId) {
+            chrome.bookmarks.move(node.id, { parentId: parentId });
+        }
     });
 });

@@ -65,15 +65,13 @@ Promise.all([docReadyP, tabP, folderP])
 
     state.currentTab = currentTab;
 
-    // fill name input
     let nameInputDomNode = $("#name-input");
-    nameInputDomNode.val(currentTab.title);
-    g_popupState.title = nameInputDomNode.val();
+    state.nameInputDomNode = nameInputDomNode;
 
     // generate select options
     let selectDomNode = $("#folder-select");
     Util.generateFolderSelectOption(folderTree, selectDomNode);
-    g_popupState.parentId = selectDomNode.val();
+    state.selectDomNode = selectDomNode;
 
     // register event handlers
     nameInputDomNode.change(function() {
@@ -99,7 +97,7 @@ Promise.all([docReadyP, tabP, folderP])
     if (matchedResults.length === 0) {
         // save it immediately
         let bookmark = {
-            parentId: Util.defaultSelectedFolderId,
+            parentId: state.selectDomNode.val(),
             title: state.currentTab.title,
             url: state.currentTab.url
         };
@@ -117,7 +115,14 @@ Promise.all([docReadyP, tabP, folderP])
     // when promise reaches here, the current page has either been saved before and retrieved,
     // or it has been created as a new node.
     console.assert(savedNode);
-    g_popupState.id = savedNode.id;
+    g_popupState.node = savedNode;
+
+    // populate the popupState and UI
+    g_popupState.parentId = savedNode.parentId;
+    state.selectDomNode.val(savedNode.parentId);
+
+    g_popupState.title = savedNode.title;
+    state.nameInputDomNode.val(savedNode.title);
 
     // Start a runtime connection to background.js
     // This is a workaround as the 'unload' event on `window` is buggy in Chrome extension,
@@ -126,13 +131,14 @@ Promise.all([docReadyP, tabP, folderP])
     chrome.runtime.connect({
         name: "popup"
     });
+
+    // Done bttn handler is better set after port connected.
+    // We want to ensure when the popup is closed, background definitely gets the disconnect event.
+    $("#done-btn").click(function() {
+        window.close();
+    });
 })
 .catch(function(err) {
     console.log("uncaught error:");
     console.log(err);
 });
-
-    // adjust title & folder
-
-    // when the popup dismisses, change title if modified, move folder if modified.
-    // The only use for the done button is to dismiss the popup
