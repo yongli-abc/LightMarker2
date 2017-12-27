@@ -215,9 +215,11 @@ Promise.all([docReadyP, tabP, folderP])
                 chrome.storage.sync.set(toStore, function() {
                     // saved successfully
                     let scrollPercentage =  Math.ceil(scrollTop / (scrollHeight - clientHeight) * 100);
-                    $("#scrollbar-input").val(scrollPercentage + "%");
+                    state.scrollbarInputDomNode.val(scrollPercentage + "%");
                 });
-            } // else this page cannot save position
+            } else {
+                state.scrollbarInputDomNode.val("Can't save for this page!");
+            }
         });
     });
 })

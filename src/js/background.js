@@ -115,3 +115,10 @@ chrome.runtime.onConnect.addListener(function(port) {
         }
     });
 });
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    if (typeof changeInfo === "object" && changeInfo.status === "complete") {
+        // this is the event when any tab opens a new page and it's complete
+        console.log("page opened");
+    }
+});
