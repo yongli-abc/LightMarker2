@@ -65,6 +65,7 @@ Promise.all([docReadyP, tabP, folderP])
 
     state.currentTab = currentTab;
 
+    // fetch name input dom
     let nameInputDomNode = $("#name-input");
     state.nameInputDomNode = nameInputDomNode;
 
@@ -72,6 +73,10 @@ Promise.all([docReadyP, tabP, folderP])
     let selectDomNode = $("#folder-select");
     Util.generateFolderSelectOption(folderTree, selectDomNode);
     state.selectDomNode = selectDomNode;
+
+    // fetch scrollbar input dom
+    let scrollbarInputDomNode = $("#scrollbar-input");
+    state.scrollbarInputDomNode = scrollbarInputDomNode;
 
     // register event handlers
     nameInputDomNode.change(function() {
@@ -117,12 +122,25 @@ Promise.all([docReadyP, tabP, folderP])
     console.assert(savedNode);
     g_popupState.node = savedNode;
 
-    // populate the popupState and UI
+    // populate UI and popupState if needed
     g_popupState.parentId = savedNode.parentId;
     state.selectDomNode.val(savedNode.parentId);
 
     g_popupState.title = savedNode.title;
     state.nameInputDomNode.val(savedNode.title);
+
+    chrome.storage.sync.get(savedNode.id, function (items) {
+        // we have saved scrollbar position before
+        if (typeof items === "object" && items.hasOwnProperty(savedNode.id)) {
+            const value = items[savedNode.id];
+            const scrollTop = value.scrollTop;
+            const scrollHeight = value.scrollHeight;
+            const clientHeight = value.clientHeight;
+
+            let scrollPercentage =  Math.ceil(scrollTop / (scrollHeight - clientHeight) * 100);
+            state.scrollbarInputDomNode.val(scrollPercentage + "%");
+        }
+    });
 
     // Start a runtime connection to background.js
     // This is a workaround as the 'unload' event on `window` is buggy in Chrome extension,
@@ -141,7 +159,13 @@ Promise.all([docReadyP, tabP, folderP])
     $("#remove-btn").click(function() {
         g_popupState.node = undefined;
         chrome.bookmarks.remove(savedNode.id);
+        chrome.storage.sync.remove(savedNode.id);
         window.close();
+    });
+
+    $("#clear-btn").click(function() {
+        chrome.storage.sync.remove(savedNode.id);
+        state.scrollbarInputDomNode.val("Not Saved");
     });
 
     // // Defer implementing edit feature, the collapsible list is much more complex
@@ -173,14 +197,14 @@ Promise.all([docReadyP, tabP, folderP])
                 const scrollHeight = results[0].scrollHeight;
                 const scrollLeft = results[0].scrollLeft;
                 const scrollTop = results[0].scrollTop;
-                const offsetHeight = results[0].offsetHeight;
+                const clientHeight = results[0].clientHeight;
 
                 const value = {
                     scrollWidth: scrollWidth,
                     scrollHeight: scrollHeight,
                     scrollLeft: scrollLeft,
                     scrollTop: scrollTop,
-                    offsetHeight: offsetHeight
+                    clientHeight: clientHeight
                 };
 
                 const key = savedNode.id;
@@ -190,7 +214,7 @@ Promise.all([docReadyP, tabP, folderP])
 
                 chrome.storage.sync.set(toStore, function() {
                     // saved successfully
-                    let scrollPercentage =  Math.ceil(scrollTop / (scrollHeight - offsetHeight) * 100);
+                    let scrollPercentage =  Math.ceil(scrollTop / (scrollHeight - clientHeight) * 100);
                     $("#scrollbar-input").val(scrollPercentage + "%");
                 });
             } // else this page cannot save position

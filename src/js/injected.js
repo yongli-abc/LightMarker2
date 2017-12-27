@@ -3,5 +3,5 @@ result = {
     scrollHeight: document.documentElement.scrollHeight,
     scrollLeft: document.documentElement.scrollLeft,
     scrollTop: document.documentElement.scrollTop,
-    offsetHeight: document.documentElement.offsetHeight
+    clientHeight: document.documentElement.clientHeight
 };
