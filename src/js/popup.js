@@ -162,8 +162,40 @@ Promise.all([docReadyP, tabP, folderP])
     //             top: top
     //         });
     //     });
-
     // });
+
+    $("#save-btn").click(function() {
+        chrome.tabs.executeScript(state.currentTab.id, {
+            file: "/src/js/injected.js"
+        }, function (results) {
+            if (Array.isArray(results) && typeof results[0] === "object") {
+                const scrollWidth = results[0].scrollWidth;
+                const scrollHeight = results[0].scrollHeight;
+                const scrollLeft = results[0].scrollLeft;
+                const scrollTop = results[0].scrollTop;
+                const offsetHeight = results[0].offsetHeight;
+
+                const value = {
+                    scrollWidth: scrollWidth,
+                    scrollHeight: scrollHeight,
+                    scrollLeft: scrollLeft,
+                    scrollTop: scrollTop,
+                    offsetHeight: offsetHeight
+                };
+
+                const key = savedNode.id;
+
+                let toStore = {};
+                toStore[key] = value;
+
+                chrome.storage.sync.set(toStore, function() {
+                    // saved successfully
+                    let scrollPercentage =  Math.ceil(scrollTop / (scrollHeight - offsetHeight) * 100);
+                    $("#scrollbar-input").val(scrollPercentage + "%");
+                });
+            } // else this page cannot save position
+        });
+    });
 })
 .catch(function(err) {
     console.log("uncaught error:");
