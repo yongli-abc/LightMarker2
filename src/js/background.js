@@ -118,7 +118,42 @@ chrome.runtime.onConnect.addListener(function(port) {
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (typeof changeInfo === "object" && changeInfo.status === "complete") {
+        console.log("tab open complete");
+        console.log(tabId);
+        console.log(tab);
         // this is the event when any tab opens a new page and it's complete
-        console.log("page opened");
+        let state = {}; // preserve states across promises
+        Promise.resolve()
+        .then(function() {
+            return new Promise(function(res, rej) {
+                chrome.bookmarks.search({
+                    url: tab.url
+                }, res);
+            });
+        })
+        .then(function(matchedResults) {
+            // this tab opened a bookmarked page
+            if (matchedResults.length > 0) {
+                let nodeId = matchedResults[0].id;
+                state.nodeId = nodeId;
+                return new Promise(function(res, rej) {
+                    chrome.storage.sync.get(nodeId, res);
+                });
+            } else {
+                return undefined;
+            }
+        })
+        .then(function(items) {
+            if (typeof items === "object" && items.hasOwnProperty(state.nodeId)) {
+                // this saved bookmark has saved scrollbar position
+                console.log("background.js prepares to inject code");
+                const scrollTop = items[state.nodeId].scrollTop;
+                const codeToInject = "window.scrollTo(0, " + scrollTop + ");";
+                chrome.tabs.executeScript({
+                    code: codeToInject,
+                    runAt: "document_idle"
+                });
+            }
+        });
     }
 });

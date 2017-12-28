@@ -14,8 +14,16 @@
     "scripts": ["/src/js/jquery-3.2.1.slim.min.js", "/src/js/background.js"]
   },
 
+  // "content_scripts": [
+  //   {
+  //     "js": ["/src/js/jquery-3.2.1.slim.min.js", "/src/js/test.js"]
+  //   }
+  // ],
+
   "permissions": [
+    "*//*/*",
     "http://*/",
+    "https://*/",
     "activeTab",
     "tabs",
     "storage",
