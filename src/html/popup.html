@@ -9,25 +9,56 @@
     <title>LightMarker2</title>
 </head>
 <body>
-    <div>
-        <div><span>Light Marker 2</span></div>
-
-        <div><span>Name: </span><input id="name-input" type="text"></div>
-        
-
-        <div><span>Folder: </span><select id="folder-select"></select></div>
-
-        <span>Scrollbar: </span>
-        <input id="scrollbar-input" type="text" value="Not Saved" disabled>
-        <button id="save-btn">Save</button>
-        <button id="clear-btn">Clear</button>
-
-        <div>
-            <button id="remove-btn" class="mini ui button">Remove</button>
-            <!-- <button id="edit-btn">Edit...</button> -->
-            <button id="done-btn" class="mini ui primary button">Done</button>
+    <div class="ui grid">
+        <div class="row">
+            <div class="sixteen wide column"><span>Light Marker 2</span></div>
         </div>
-        
+
+        <div class="row">
+            <div class="four wide column">
+                <span>Name: </span>
+            </div>
+            <div class="twelve wide column">
+                <input id="name-input" type="text">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="four wide column">
+                <span>Folder: </span>
+            </div>
+            <div class="twelve wide column">
+                <select id="folder-select"></select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="four wide column">
+                <span>Scrollbar: </span>
+            </div>
+            <div class="six wide column">
+                <input id="scrollbar-input" type="text" value="Not Saved" disabled size="18">
+            </div>
+            <div class="six wide centered column">
+                <div class="mini ui buttons">
+                    <button id="save-btn" class="ui positive button">Save</button>
+                    <div class="or"></div>
+                    <button id="clear-btn" class="ui button">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="red five wide column">
+                <button id="remove-btn" class="ui button">Remove</button>
+            </div>
+            <div class="six wide column">
+
+            </div>
+            <div class="red five wide column">
+                <button id="done-btn" class="ui primary button">Done</button>
+            </div>
+        </div>
     </div>
 
     <script src="/src/js/jquery-3.2.1.slim.min.js"></script>
