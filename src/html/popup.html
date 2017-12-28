@@ -5,24 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/src/css/popup.css">
+    <link rel="stylesheet" href="/src/css/semantic-ui/semantic.min.css">
     <title>LightMarker2</title>
 </head>
 <body>
-    <div><span>Light Marker 2</span></div>
-    <div><span>Name: </span><input id="name-input" type="text"></div>
-    <div><span>Folder: </span><select id="folder-select"></select>
     <div>
+        <div><span>Light Marker 2</span></div>
+
+        <div><span>Name: </span><input id="name-input" type="text"></div>
+        
+
+        <div><span>Folder: </span><select id="folder-select"></select></div>
+
         <span>Scrollbar: </span>
         <input id="scrollbar-input" type="text" value="Not Saved" disabled>
         <button id="save-btn">Save</button>
         <button id="clear-btn">Clear</button>
+
+        <div>
+            <button id="remove-btn" class="mini ui button">Remove</button>
+            <!-- <button id="edit-btn">Edit...</button> -->
+            <button id="done-btn" class="mini ui primary button">Done</button>
+        </div>
+        
     </div>
-    <div>
-        <button id="remove-btn">Remove</button>
-        <!-- <button id="edit-btn">Edit...</button> -->
-        <button id="done-btn">Done</button>
-    </div>
+
     <script src="/src/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="/src/css/semantic-ui/semantic.min.js"></script>
     <script src="/src/js/popup.js"></script>
 </body>
 </html>
