@@ -17,6 +17,38 @@ const Util = window.LightMarker.Util;
 let g_popupState = window.LightMarker.Shared.g_popupState;
 
 /*
+ * A utility function for setting the saved icon for a particular tab.
+ */
+window.LightMarker.Util.setSavedIcon = function(tabId) {
+    const path = {
+        "16": "images/icons16/png/002-shapes-1.png",
+        "24": "images/icons24/png/002-shapes-1.png",
+        "32": "images/icons32/png/002-shapes-1.png"
+    };
+
+    chrome.browserAction.setIcon({
+        path: path,
+        tabId: tabId
+    });
+};
+
+/*
+ * A utility function for setting the unsaved icon for a particular tab.
+ */
+window.LightMarker.Util.setUnsavedIcon = function(tabId) {
+    const path = {
+        "16": "images/icons16/png/001-shapes.png",
+        "24": "images/icons24/png/001-shapes.png",
+        "32": "images/icons32/png/001-shapes.png"
+    };
+
+    chrome.browserAction.setIcon({
+        path: path,
+        tabId: tabId
+    });
+};
+
+/*
  * A utility function to clean page nodes inside the bookmarkTree.
  *
  * @param {Object[]} An array of bookmarkTree nodes, that may contain page node.
@@ -153,5 +185,44 @@ chrome.runtime.onConnect.addListener(function(port) {
 
     } else {
         console.assert(false);
+    }
+});
+
+/*
+ * Listen to tabs created event.
+ * At this time, the url may be set, or may be not set.
+ * This is trying to be fast for setting the icon properly.
+ */
+chrome.tabs.onCreated.addListener(function(tab) {
+    if (typeof tab.url === "string") {
+        chrome.bookmarks.search({
+            url: tab.url
+        }, function(matchedResults) {
+            if (matchedResults.length > 0) {
+                Util.setSavedIcon(tab.id);
+            }
+        })
+    }
+});
+
+/*
+ * Listen to tabs updated event.
+ * 
+ */
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    console.log("\nTabs update event");
+    console.log(tabId);
+    console.log(changeInfo);
+    console.log(tab);
+
+    if (typeof changeInfo === "object" && changeInfo.status === "loading") {
+        // the first event when a tab starts to load
+        chrome.bookmarks.search({
+            url: tab.url
+        }, function(matchedResults) {
+            if (matchedResults.length > 0) {
+                Util.setSavedIcon(tabId);
+            }
+        });
     }
 });

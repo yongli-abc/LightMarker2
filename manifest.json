@@ -7,7 +7,12 @@
 
   "browser_action": {
     "default_title": "LightMarker2",
-    "default_popup": "src/html/popup.html"
+    "default_popup": "src/html/popup.html",
+    "default_icon": {
+      "16": "images/icons16/png/001-shapes.png",
+      "24": "images/icons24/png/001-shapes.png", 
+      "32": "images/icons32/png/001-shapes.png"
+    }
   },
 
   "background": {

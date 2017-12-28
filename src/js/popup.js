@@ -121,6 +121,7 @@ Promise.all([docReadyP, tabP, folderP])
     // or it has been created as a new node.
     console.assert(savedNode);
     g_popupState.node = savedNode;
+    Util.setSavedIcon(state.currentTab.id);
 
     // populate UI and popupState if needed
     g_popupState.parentId = savedNode.parentId;
@@ -160,6 +161,7 @@ Promise.all([docReadyP, tabP, folderP])
         g_popupState.node = undefined;
         chrome.bookmarks.remove(savedNode.id);
         chrome.storage.sync.remove(savedNode.id);
+        Util.setUnsavedIcon(state.currentTab.id);
         window.close();
     });
 

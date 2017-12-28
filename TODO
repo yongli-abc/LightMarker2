@@ -6,5 +6,8 @@ Todo:
   ✔ button actions @done(17-12-26 23:15)
     ✔ remove button @done(17-12-26 22:26)
     ✔ change save scrollbar to a button @done(17-12-26 23:20)
-  [ ] save scrollbar functionality
+  ✔ save scrollbar functionality @done(17-12-28 20:23)
+  ✔ change browser icon based on saved or not @done(17-12-28 21:26)
+  [ ] beautify
   [ ] edit functionality
+  [ ] Icon displays are not in sync if bookmarks are created / removed by Chrome's bookmark
