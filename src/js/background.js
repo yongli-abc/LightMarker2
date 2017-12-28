@@ -91,69 +91,67 @@ window.LightMarker.Util.defaultSelectedFolderId = g_bookmarksBarId;
  * Currently only the popup page could connect.
  */
 chrome.runtime.onConnect.addListener(function(port) {
-    console.log("port connected");
-    console.assert(port.name === "popup");
+    if (port.name === "popup") {
+        console.log("port connected with popup page");
 
-    port.onDisconnect.addListener(function(port) {
-        console.log("port disconnected");
-
-        let node = g_popupState.node;
-        let title = g_popupState.title;
-        let parentId = g_popupState.parentId;
-
-        // If node is undefined, the popup is closed by remove button, no action here.
-        if (node) {
-            // update title if changed
-            if (title !== node.title) {
-                chrome.bookmarks.update(node.id, { title: title });
+        port.onDisconnect.addListener(function(port) {
+            console.log("port disconnected from popup page");
+            let node = g_popupState.node;
+            let title = g_popupState.title;
+            let parentId = g_popupState.parentId;
+    
+            // If node is undefined, the popup is closed by remove button, no action here.
+            if (node) {
+                // update title if changed
+                if (title !== node.title) {
+                    chrome.bookmarks.update(node.id, { title: title });
+                }
+    
+                // update parentId if changed
+                if (parentId !== node.parentId) {
+                    chrome.bookmarks.move(node.id, { parentId: parentId });
+                }
             }
+        });
 
-            // update parentId if changed
-            if (parentId !== node.parentId) {
-                chrome.bookmarks.move(node.id, { parentId: parentId });
-            }
-        }
-    });
-});
+    } else if (port.name === "content") {
+        console.log("port connected with content page");
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (typeof changeInfo === "object" && changeInfo.status === "complete") {
-        console.log("tab open complete");
-        console.log(tabId);
-        console.log(tab);
-        // this is the event when any tab opens a new page and it's complete
-        let state = {}; // preserve states across promises
+        const contentTabId = port.sender.tab.id;
+        const contentTabUrl = port.sender.tab.url;
+        console.log("content page's tab id: " + contentTabId + ", url: " + contentTabUrl);
+
         Promise.resolve()
         .then(function() {
             return new Promise(function(res, rej) {
                 chrome.bookmarks.search({
-                    url: tab.url
+                    url: contentTabUrl
                 }, res);
             });
         })
         .then(function(matchedResults) {
-            // this tab opened a bookmarked page
-            if (matchedResults.length > 0) {
-                let nodeId = matchedResults[0].id;
-                state.nodeId = nodeId;
-                return new Promise(function(res, rej) {
-                    chrome.storage.sync.get(nodeId, res);
-                });
+            if (matchedResults.length === 0) {
+                // this url hasn't been saved as a bookmark
+                port.disconnect();
+
             } else {
-                return undefined;
-            }
-        })
-        .then(function(items) {
-            if (typeof items === "object" && items.hasOwnProperty(state.nodeId)) {
-                // this saved bookmark has saved scrollbar position
-                console.log("background.js prepares to inject code");
-                const scrollTop = items[state.nodeId].scrollTop;
-                const codeToInject = "window.scrollTo(0, " + scrollTop + ");";
-                chrome.tabs.executeScript({
-                    code: codeToInject,
-                    runAt: "document_idle"
+                console.log("found matched bookmark");
+                const nodeId = matchedResults[0].id;
+                chrome.storage.sync.get(nodeId, function(items) {
+                    if (typeof items === "object" && items.hasOwnProperty(nodeId)) {
+                        // this bookmark has saved scrollbar position
+                        console.log("found saved scrollbar position");
+                        const value = items[nodeId];
+                        console.log("value=" + value);
+                        const scrollTop = value.scrollTop;
+                        console.log("scrollTop=" + scrollTop);
+                        port.postMessage(scrollTop);
+                    }
                 });
             }
         });
+
+    } else {
+        console.assert(false);
     }
 });

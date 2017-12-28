@@ -14,14 +14,15 @@
     "scripts": ["/src/js/jquery-3.2.1.slim.min.js", "/src/js/background.js"]
   },
 
-  // "content_scripts": [
-  //   {
-  //     "js": ["/src/js/jquery-3.2.1.slim.min.js", "/src/js/test.js"]
-  //   }
-  // ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["/src/js/jquery-3.2.1.slim.min.js", "/src/js/content-script.js"],
+      "run_at": "document_idle"
+    }
+  ],
 
   "permissions": [
-    "*//*/*",
     "http://*/",
     "https://*/",
     "activeTab",

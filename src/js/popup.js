@@ -129,7 +129,7 @@ Promise.all([docReadyP, tabP, folderP])
     g_popupState.title = savedNode.title;
     state.nameInputDomNode.val(savedNode.title);
 
-    chrome.storage.sync.get(savedNode.id, function (items) {
+    chrome.storage.sync.get(savedNode.id, function(items) {
         // we have saved scrollbar position before
         if (typeof items === "object" && items.hasOwnProperty(savedNode.id)) {
             const value = items[savedNode.id];
