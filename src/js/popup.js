@@ -220,7 +220,7 @@ Promise.all([docReadyP, tabP, folderP])
                     state.scrollbarInputDomNode.val(scrollPercentage + "%");
                 });
             } else {
-                state.scrollbarInputDomNode.val("Can't save for this page!");
+                state.scrollbarInputDomNode.val("Unsavable!");
             }
         });
     });
