@@ -19,3 +19,7 @@ Just remember to click the `save` button to save the scrollbar location. Next ti
 ## Bugs and feature requests 🤪
 
 Please submit issues for reporting bugs 🐞, feature requests 💡 or any thoughts 😘 !
+
+## Credit
+
+Light Marker icons made by [Smashicons](https://smashicons.com/) from [www.flaticon.com]().
