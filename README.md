@@ -15,6 +15,12 @@ A lightweight, non-intrusive bookmark Chrome Extension to save your scrollbar po
   <img src="images/screenshots/screenshot.png" width="500px"/>
 </p>
 
+## Install ⚙️
+
+[Chrome Webstore Install Page](https://chrome.google.com/webstore/detail/light-marker/lhkgiieenfadlgmaacnhnidkneedhpao?hl=en-GB).
+
+Or just search **Light Marker** in webstore.
+
 ## How to use 🤔
 
 Simply install it and click it. Light Marker is meant to be a lightweight overlay on top of Chrome's default bookmark. It saves bookmark exactly the same as Chrome's own bookmark. Even you uninstall Light Marker, you easily fall back to the default one, without lossing any bookmakrs (but you lose scrollbar positions).
