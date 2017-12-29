@@ -4,6 +4,11 @@
 
 # Light Marker ⚡
 
+[![GitHub tag](https://img.shields.io/github/tag/NeilLi1992/LightMarker2.svg)](https://github.com/NeilLi1992/LightMarker2/tags)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/lhkgiieenfadlgmaacnhnidkneedhpao.svg)](https://chrome.google.com/webstore/detail/light-marker/lhkgiieenfadlgmaacnhnidkneedhpao?hl=en-GB)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/lhkgiieenfadlgmaacnhnidkneedhpao.svg)](https://chrome.google.com/webstore/detail/light-marker/lhkgiieenfadlgmaacnhnidkneedhpao?hl=en-GB)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/lhkgiieenfadlgmaacnhnidkneedhpao.svg)](https://chrome.google.com/webstore/detail/light-marker/lhkgiieenfadlgmaacnhnidkneedhpao?hl=en-GB)
+
 A lightweight, non-intrusive bookmark Chrome Extension to save your scrollbar position, in order to remember your reading locations and restore it when you open next time. 😮
 
 <p align="center">
