@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/src/css/popup.css">
     <link rel="stylesheet" href="/src/css/semantic-ui/semantic.min.css">
-    <title>LightMarker2</title>
+    <link rel="stylesheet" href="/src/css/popup.css">
+    <title>Light Marker</title>
 </head>
 <body>
     <div class="ui grid">
         <div class="row">
-            <div class="sixteen wide column"><span>Light Marker 2</span></div>
+            <div class="sixteen wide column"><span>Light Marker</span></div>
         </div>
 
         <div class="row">
             <div class="four wide column">
                 <span>Name: </span>
             </div>
-            <div class="twelve wide column">
+            <div class="twelve wide column ui input focus">
                 <input id="name-input" type="text">
             </div>
         </div>
@@ -28,7 +28,7 @@
                 <span>Folder: </span>
             </div>
             <div class="twelve wide column">
-                <select id="folder-select"></select>
+                <select id="folder-select" class="ui selection dropdown"></select>
             </div>
         </div>
 
@@ -36,8 +36,8 @@
             <div class="four wide column">
                 <span>Scrollbar: </span>
             </div>
-            <div class="six wide column">
-                <input id="scrollbar-input" type="text" value="Not Saved" disabled size="18">
+            <div class="six wide column ui input disabled">
+                <input id="scrollbar-input" type="text" value="Not Saved" disabled>
             </div>
             <div class="six wide centered column">
                 <div class="mini ui buttons">
@@ -49,14 +49,14 @@
         </div>
 
         <div class="row">
-            <div class="red five wide column">
-                <button id="remove-btn" class="ui button">Remove</button>
+            <div class="five wide column">
+                <button id="remove-btn" class="small ui button">Remove</button>
             </div>
             <div class="six wide column">
 
             </div>
-            <div class="red five wide column">
-                <button id="done-btn" class="ui primary button">Done</button>
+            <div class="five wide column">
+                <button id="done-btn" class="small ui primary button">Done</button>
             </div>
         </div>
     </div>

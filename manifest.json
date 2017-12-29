@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
 
-  "name": "LightMarker2",
+  "name": "Light Marker",
   "version": "2.0",
   "description": "An intellgent bookmark extension.",
 
   "browser_action": {
-    "default_title": "LightMarker2",
+    "default_title": "Light Marker",
     "default_popup": "src/html/popup.html",
     "default_icon": {
       "16": "images/icons16/png/001-shapes.png",

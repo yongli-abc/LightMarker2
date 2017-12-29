@@ -100,7 +100,7 @@ window.LightMarker.Util.generateFolderSelectOption = function(folderTree, select
         optionDom.attr("id", "folder-option-" + folderTree[i].id);
         optionDom.attr("value", folderTree[i].id);
 
-        optionDom.html(Array(level+1).join("× ") + folderTree[i].title);
+        optionDom.html(Array(level+1).join("+ ") + folderTree[i].title);
 
         if (Util.defaultSelectedFolderId === folderTree[i].id) {
             optionDom.attr("selected", true);
