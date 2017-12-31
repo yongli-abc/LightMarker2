@@ -236,7 +236,9 @@ chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
     // query all tabs, and set saved icon for tabs with matched url
     chrome.tabs.query({}, function(allTabs) {
         for (let i = 0; i < allTabs.length; ++i) {
-            Util.setSavedIcon(allTabs[i].id);
+            if (allTabs[i].url === bookmark.url) {
+                Util.setSavedIcon(allTabs[i].id);
+            }
         }
     })
 });
