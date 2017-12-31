@@ -28,10 +28,9 @@
   ],
 
   "permissions": [
+    "tabs",
     "http://*/",
     "https://*/",
-    "activeTab",
-    "tabs",
     "storage",
     "bookmarks"
   ]

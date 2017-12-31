@@ -207,7 +207,6 @@ chrome.tabs.onCreated.addListener(function(tab) {
 
 /*
  * Listen to tabs updated event.
- * 
  */
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     console.log("\nTabs update event");
@@ -222,6 +221,44 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         }, function(matchedResults) {
             if (matchedResults.length > 0) {
                 Util.setSavedIcon(tabId);
+            }
+        });
+    }
+});
+
+/*
+ * Listen to bookmark created event.
+ * Query all tabs to match its url.
+ * Set saved icon for matched tab.
+ */
+chrome.bookmarks.onCreated.addListener(function(id, bookmark) {
+    console.log("bookmark created", bookmark);
+    // query all tabs, and set saved icon for tabs with matched url
+    chrome.tabs.query({}, function(allTabs) {
+        for (let i = 0; i < allTabs.length; ++i) {
+            Util.setSavedIcon(allTabs[i].id);
+        }
+    })
+});
+
+/*
+ * @param {String} id The removed bookmark node's id
+ * 
+ * @param {Object} removeInfo
+ * @param {String} removeInfo.parentId
+ * @param {Number} removeInfo.index
+ * @param {BookmarkTreeNode} removeInfo.node  
+ */
+chrome.bookmarks.onRemoved.addListener(function(id, removeInfo) {
+    // This is a workaround.
+    // I don't konw why if I specify the query info,
+    // it doesn't return any tab
+    if (removeInfo.node.hasOwnProperty("url")) {
+        chrome.tabs.query({}, function(allTabs) {
+            for (let i = 0; i < allTabs.length; ++i) {
+                if (allTabs[i].url === removeInfo.node.url) {
+                    Util.setUnsavedIcon(allTabs[i].id);
+                }
             }
         });
     }

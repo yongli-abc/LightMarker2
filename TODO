@@ -8,6 +8,6 @@ Todo:
     ✔ change save scrollbar to a button @done(17-12-26 23:20)
   ✔ save scrollbar functionality @done(17-12-28 20:23)
   ✔ change browser icon based on saved or not @done(17-12-28 21:26)
-  [ ] beautify
+  ✔ beautify @done(17-12-31 15:40)
+  ✔ Icon displays are not in sync if bookmarks are created / removed by Chrome's bookmark @done(17-12-31 16:26)
   [ ] edit functionality
-  [ ] Icon displays are not in sync if bookmarks are created / removed by Chrome's bookmark
