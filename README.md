@@ -33,4 +33,4 @@ Please submit issues for reporting bugs 🐞, feature requests 💡 or any thoug
 
 ## Credit
 
-Light Marker icons made by [Smashicons](https://smashicons.com/) from [www.flaticon.com](www.flaticon.com).
+Light Marker icons made by [Smashicons](https://smashicons.com/) from [www.flaticon.com](https://www.flaticon.com/).
