@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "Light Marker",
-  "version": "2.0",
+  "version": "2.1",
   "description": "An intellgent bookmark extension.",
 
   "browser_action": {
