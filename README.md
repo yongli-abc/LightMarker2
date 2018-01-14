@@ -27,6 +27,13 @@ Simply install it and click it. Light Marker is meant to be a lightweight overla
 
 Just remember to click the `save` button to save the scrollbar location. Next time when you open this page, it automatically jumps to this location, so you're back to where you left!
 
+#### Shortcut Keys
+Press `Ctrl+D` or `Cmd+D` to add bookmar. Lightmarker will replace Chrome's default bookmark popup page.
+
+When the popup is opened, press `Ctrl+D` or `Cmd+D` again, to save / update the scrollbar position quickly.
+
+I'm planning to add an option page for customizing shortcut key bindings very soon.
+
 ## Bugs and feature requests 🤪
 
 Please submit issues for reporting bugs 🐞, feature requests 💡 or any thoughts 😘 !
