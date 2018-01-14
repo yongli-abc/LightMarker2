@@ -13,6 +13,14 @@ const docReadyP = Promise.resolve()
 .then(function() {
     return new Promise(function(res, rej) {
         $(document).ready(function() {
+            $(document.body).keydown(function(e) {
+                if (e.keyCode === 68) {
+                    if (e.ctrlKey || e.metaKey) {
+                        $("#save-btn").trigger("click");
+                        e.preventDefault();
+                    }
+                }
+            });
             res();
         });
     });
