@@ -27,6 +27,16 @@
     }
   ],
 
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "mac": "Command+D",
+        "windows": "Ctrl+D",
+        "linux": "Ctrl+D"
+      }
+    }
+  },
+
   "permissions": [
     "tabs",
     "http://*/",
